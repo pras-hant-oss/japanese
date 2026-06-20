@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futatsume Ramen - Thamel | Authentic Japanese Restaurant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0f;
+            --ink-light: #12121a;
+            --surface: #16161f;
+            --surface-elevated: #1e1e2a;
+            --surface-card: #242432;
+            --border: rgba(255,255,255,0.06);
+            --border-glow: rgba(212, 165, 116, 0.15);
+            --text-primary: #f0e6d9;
+            --text-secondary: #a89f91;
+            --text-muted: #6b6560;
+            --gold: #d4a574;
+            --gold-bright: #e8c496;
+            --gold-dim: #8a6d4f;
+            --crimson: #c41e3a;
+            --crimson-glow: rgba(196, 30, 58, 0.3);
+            --crimson-soft: rgba(196, 30, 58, 0.08);
+            --warm-white: #faf6f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-primary);
+            background: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--ink); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            padding: 1.5rem 0;
+        }
+        nav.scrolled {
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(20px) saturate(1.5);
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-glow);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--warm-white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--gold); font-style: italic; }
+        .logo::before {
+            content: '◆';
+            color: var(--crimson);
+            font-size: 0.8rem;
+            margin-right: 0.3rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transition: width 0.4s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--gold-bright); }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--crimson), #8b1532);
+            color: white !important;
+            padding: 0.6rem 1.5rem !important;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            letter-spacing: 1px !important;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--crimson-glow);
+        }
+        .nav-cta::after { display: none !important; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gold);
+            padding: 0.5rem;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(196, 30, 58, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(212, 165, 116, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(138, 109, 79, 0.03) 0%, transparent 60%);
+            animation: heroPulse 8s ease-in-out infinite;
+        }
+        @keyframes heroPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(212, 165, 116, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 165, 116, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+        .hero-ornament {
+            font-size: 2rem;
+            color: var(--gold-dim);
+            margin-bottom: 2rem;
+            letter-spacing: 1rem;
+            opacity: 0.6;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.2), rgba(196, 30, 58, 0.05));
+            border: 1px solid rgba(196, 30, 58, 0.3);
+            color: var(--crimson);
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease;
+            backdrop-filter: blur(10px);
+        }
+        .hero-badge::before {
+            content: '●';
+            font-size: 0.5rem;
+            color: var(--crimson);
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            color: var(--warm-white);
+            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        .hero h1 .jp {
+            display: block;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.35em;
+            font-weight: 300;
+            color: var(--gold);
+            margin-top: 1rem;
+            letter-spacing: 8px;
+            opacity: 0.8;
+        }
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.4s both;
+            letter-spacing: 1px;
+        }
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 3rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+        .hero-meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .hero-meta-item:hover {
+            border-color: var(--border-glow);
+            background: rgba(212, 165, 116, 0.03);
+            transform: translateY(-3px);
+        }
+        .hero-meta-item .icon { font-size: 1.5rem; color: var(--gold); }
+        .hero-meta-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+        .hero-meta-item .value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .stars { color: #ffd700; letter-spacing: 2px; font-size: 1.1rem; }
+        .hero-cta {
+            margin-top: 4rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+        .btn {
+            padding: 1.1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--crimson), #8b1532);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px var(--crimson-glow);
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(196, 30, 58, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-dim);
+        }
+        .btn-outline:hover {
+            background: rgba(212, 165, 116, 0.1);
+            border-color: var(--gold);
+            color: var(--gold-bright);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 165, 116, 0.1);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2.5s infinite;
+            color: var(--gold-dim);
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+        .section-header .jp-title {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--crimson);
+            font-size: 1rem;
+            letter-spacing: 8px;
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--warm-white);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+        }
+        .section-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            color: var(--gold-dim);
+            font-size: 0.8rem;
+        }
+        .section-ornament::before,
+        .section-ornament::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim));
+        }
+        .section-ornament::after {
+            background: linear-gradient(90deg, var(--gold-dim), transparent);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 8rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+        }
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .category-btn {
+            padding: 0.8rem 1.8rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.8rem;
+            transition: all 0.4s ease;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--crimson), #8b1532);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50px;
+        }
+        .category-btn:hover,
+        .category-btn.active {
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--crimson-glow);
+        }
+        .category-btn:hover::before,
+        .category-btn.active::before { opacity: 1; }
+        .category-btn span { position: relative; z-index: 1; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+        .menu-card {
+            background: var(--surface-card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardEnter 0.6s ease forwards;
+        }
+        .menu-card:nth-child(1) { animation-delay: 0.05s; }
+        .menu-card:nth-child(2) { animation-delay: 0.1s; }
+        .menu-card:nth-child(3) { animation-delay: 0.15s; }
+        .menu-card:nth-child(4) { animation-delay: 0.2s; }
+        .menu-card:nth-child(5) { animation-delay: 0.25s; }
+        .menu-card:nth-child(6) { animation-delay: 0.3s; }
+        .menu-card:nth-child(7) { animation-delay: 0.35s; }
+        .menu-card:nth-child(8) { animation-delay: 0.4s; }
+        .menu-card:nth-child(9) { animation-delay: 0.45s; }
+        .menu-card:nth-child(10) { animation-delay: 0.5s; }
+        @keyframes cardEnter {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold), var(--crimson));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .menu-card:hover::before { opacity: 1; }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-glow);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(212, 165, 116, 0.05);
+        }
+        .menu-card-header {
+            padding: 1.8rem 1.8rem 0.8rem;
+            position: relative;
+        }
+        .menu-card-header h3 {
+            font-size: 1.15rem;
+            color: var(--warm-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .menu-card-header .jp-name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            display: block;
+            margin-top: 0.2rem;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .menu-card-header .price {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            font-family: 'Playfair Display', serif;
+        }
+        .menu-card-body {
+            padding: 0.5rem 1.8rem 1.8rem;
+        }
+        .menu-card-body p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .menu-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.08);
+            color: var(--gold);
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+        .tag.spicy {
+            background: rgba(196, 30, 58, 0.08);
+            color: var(--crimson);
+            border-color: rgba(196, 30, 58, 0.15);
+        }
+        .tag.veg {
+            background: rgba(76, 175, 80, 0.08);
+            color: #81c784;
+            border-color: rgba(76, 175, 80, 0.15);
+        }
+        .signature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.15), rgba(196, 30, 58, 0.05));
+            color: var(--crimson);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(196, 30, 58, 0.2);
+        }
+        .signature-badge::before { content: '★'; font-size: 0.6rem; }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(180deg, var(--ink) 0%, var(--ink-light) 100%);
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+        }
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+        .contact-info .jp-title {
+            color: var(--crimson);
+            letter-spacing: 8px;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        .contact-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--warm-white);
+        }
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .contact-item {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: var(--surface-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .contact-item:hover {
+            border-color: var(--border-glow);
+            transform: translateX(5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .contact-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(212, 165, 116, 0.05));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+        .contact-item h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .contact-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        .contact-item a:hover {
+            color: var(--gold-bright);
+            border-bottom-color: var(--gold-dim);
+        }
+        .hours-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+        .hours-grid .day { color: var(--text-muted); font-size: 0.9rem; }
+        .hours-grid .time { color: var(--text-primary); font-weight: 500; font-size: 0.9rem; }
+        .service-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .service-pill {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .map-wrapper {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .map-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--gold-dim), transparent, var(--crimson));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            border: none;
+            filter: grayscale(0.4) contrast(1.2) brightness(0.8);
+            display: block;
+        }
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, var(--ink), transparent);
+            pointer-events: none;
+        }
+        .map-overlay-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+        .map-overlay-content .icon { font-size: 1.5rem; color: var(--crimson); }
+
+        /* Footer */
+        footer {
+            background: var(--ink);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--warm-white);
+            margin-bottom: 1rem;
+        }
+        .footer-logo span { color: var(--gold); font-style: italic; }
+        footer p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-12px); }
+            60% { transform: translateX(-50%) translateY(-6px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--ink);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border);
+                backdrop-filter: blur(20px);
+            }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-meta { flex-direction: column; gap: 1rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .contact-container { grid-template-columns: 1fr; }
+            .map-wrapper iframe { min-height: 350px; }
+            .menu-categories { gap: 0.5rem; }
+            .category-btn { padding: 0.6rem 1.2rem; font-size: 0.75rem; }
+            .hero-cta { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; justify-content: center; }
+        }
+
+        /* Intersection Observer */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                Futatsume <span>Ramen</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="tel:976-8942367" class="nav-cta">Order Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-ornament">◆ ◆ ◆</div>
+            <div class="hero-badge">Authentic Japanese Cuisine</div>
+            <h1>
+                Futatsume Ramen
+                <span class="jp">ふたつめラーメン</span>
+            </h1>
+            <p class="hero-subtitle">Thamel, Kathmandu — Rich Pork Bone & Chicken Broth Specialists</p>
+            <div class="hero-divider"></div>
+
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <span class="icon">★</span>
+                    <span class="label">Rating</span>
+                    <span class="value">
+                        <span class="stars">★★★★★</span>
+                        4.8
+                    </span>
+                </div>
+                <div class="hero-meta-item">
+                    <span class="icon">₨</span>
+                    <span class="label">Average</span>
+                    <span class="value">Rs. 1,000–1,500</span>
+                </div>
+                <div class="hero-meta-item">
+                    <span class="icon">◷</span>
+                    <span class="label">Hours</span>
+                    <span class="value">11:30 AM – 11:00 PM</span>
+                </div>
+            </div>
+
+            <div class="hero-cta">
+                <a href="#menu" class="btn btn-primary">
+                    <span>Explore Menu</span>
+                    <span>→</span>
+                </a>
+                <a href="tel:976-8942367" class="btn btn-outline">
+                    <span>Call to Order</span>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            ↓
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="section-header fade-in">
+            <span class="jp-title">メニュー</span>
+            <h2>Our Menu</h2>
+            <p>Authentic Japanese flavors crafted with traditional techniques and the finest ingredients</p>
+            <div class="section-ornament">◆</div>
+        </div>
+
+        <div class="menu-categories fade-in">
+            <button class="category-btn active" data-category="all"><span>All Items</span></button>
+            <button class="category-btn" data-category="ramen"><span>Ramen</span></button>
+            <button class="category-btn" data-category="sushi"><span>Sushi</span></button>
+            <button class="category-btn" data-category="bento"><span>Bento</span></button>
+            <button class="category-btn" data-category="stirfry"><span>Stir-Fried</span></button>
+            <button class="category-btn" data-category="rice"><span>Rice</span></button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+            <!-- Ramen -->
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <span class="signature-badge">Signature Dish</span>
+                    <h3>
+                        <div>
+                            Noukou Tanmen
+                            <span class="jp-name">濃厚タンメン</span>
+                        </div>
+                        <span class="price">Rs. 860</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Special tanmen made with a rich pork bone and chicken broth. Customize with thick or thin noodles. Garlic and ginger available upon request.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">Customizable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Shio Tanmen
+                            <span class="jp-name">しおタンメン</span>
+                        </div>
+                        <span class="price">Rs. 860</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Traditional tanmen with a light salty soup. A classic choice for those who prefer subtle, clean flavors.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">Traditional</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Karai Tanmen
+                            <span class="jp-name">辛いタンメン</span>
+                        </div>
+                        <span class="price">Rs. 890</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Spicy and rich tanmen with the aromatic kick of Chinese peppercorns. Perfect for spice lovers.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Rajyomiso Tanmen
+                            <span class="jp-name">辣椒味噌タンメン</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Spicy and rich tanmen featuring white koji and raw miso for a deep, fermented umami flavor.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                            <span class="tag">Miso</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Tomato Tanmen
+                            <span class="jp-name">濃厚トマトタンメン</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Healthy tanmen with stir-fried vegetables and a rich tomato soup base. A lighter yet flavorful option.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">Healthy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Curry Tanmen
+                            <span class="jp-name">濃厚カレータンメン</span>
+                        </div>
+                        <span class="price">Rs. 880</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Rich tanmen made with our homemade curry blend. A unique fusion of Japanese curry and ramen.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">House Curry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="ramen">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Mori Tanmen
+                            <span class="jp-name">もりタンメン</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Tanmen tsukemen style. Dipping noodles served with a concentrated broth for intense flavor.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">Tsukemen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sushi -->
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Cucumber Roll
+                            <span class="jp-name">キュウリ巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 400</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Fresh cucumber wrapped in seasoned sushi rice and nori. Light and refreshing.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag veg">Vegetarian</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Rolled Egg Roll
+                            <span class="jp-name">だし巻き玉子巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 600</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Sweet Japanese omelet (dashimaki tamago) rolled in sushi rice and nori.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Avocado Roll
+                            <span class="jp-name">アボカド巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 650</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Creamy avocado with sushi rice and nori. A vegetarian favorite.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag veg">Vegetarian</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Salmon & Avocado Roll
+                            <span class="jp-name">アボカドサーモン巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 880</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Fresh salmon paired with creamy avocado. A classic combination of textures and flavors.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Chicken Cutlet Roll
+                            <span class="jp-name">チキンカツ巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Crispy chicken cutlet rolled with sushi rice. A unique fusion of katsu and sushi.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Teriyaki Chicken Roll
+                            <span class="jp-name">照り焼きチキン巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Glazed teriyaki chicken with sushi rice. Sweet and savory in every bite.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Shrimp Tempura Roll
+                            <span class="jp-name">海老天巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 750</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Crispy shrimp tempura rolled in sushi rice with nori. Crunchy and satisfying.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="sushi">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            California Roll
+                            <span class="jp-name">カリフォルニア巻き寿司</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Crab stick, avocado, and cucumber with tobiko. The classic inside-out roll.</p>
+                </div>
+            </div>
+
+            <!-- Bento -->
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Teriyaki Chicken Bento
+                            <span class="jp-name">照り焼きチキン弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Glazed teriyaki chicken served with rice, salad, and side dishes in a traditional bento box.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Chicken Cutlet Bento
+                            <span class="jp-name">チキンカツ弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Crispy chicken cutlet with rice, salad, and pickles. A satisfying complete meal.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Mapotofu Bento
+                            <span class="jp-name">麻婆豆腐弁当</span>
+                        </div>
+                        <span class="price">Rs. 800</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Spicy mapo tofu with rice and sides. A Sichuan-Japanese fusion favorite.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Chicken Ginger Bento
+                            <span class="jp-name">鶏肉生姜炒め弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Stir-fried chicken with ginger, served with rice and accompaniments.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Fried Chicken Bento
+                            <span class="jp-name">唐揚げ弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Japanese fried chicken (karaage) with rice and salad. Crispy and juicy.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork Cutlet Bento
+                            <span class="jp-name">豚カツ弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Crispy pork cutlet (tonkatsu) with rice, salad, and pickles.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="bento">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork Ginger Bento
+                            <span class="jp-name">豚肉生姜炒め弁当</span>
+                        </div>
+                        <span class="price">Rs. 900</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Stir-fried pork with ginger, served with rice and side dishes.</p>
+                </div>
+            </div>
+
+            <!-- Stir-Fried -->
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Stir-fried Meat & Vegetables
+                            <span class="jp-name">肉野菜炒め</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Classic stir-fry with seasonal vegetables and your choice of meat in a savory sauce.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Stir-fried Pork & Kimchi
+                            <span class="jp-name">豚肉キムチ炒め</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Pork stir-fried with tangy kimchi. A spicy and sour flavor explosion.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Stir-fried Pork & Ginger
+                            <span class="jp-name">豚肉生姜炒め</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Pork stir-fried with fresh ginger. Aromatic and comforting.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Gizzards with Black Pepper
+                            <span class="jp-name">砂肝黒胡椒炒め</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Chicken gizzards stir-fried with cracked black pepper. A unique texture experience.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Double Pot Meat
+                            <span class="jp-name">回鍋肉</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Twice-cooked pork with cabbage and peppers. A Sichuan classic adapted Japanese style.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Buttered Squid
+                            <span class="jp-name">イカのバター炒め</span>
+                        </div>
+                        <span class="price">Rs. 750</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Tender squid stir-fried in butter. Rich and indulgent.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Shrimp Chili Sauce
+                            <span class="jp-name">エビチリソース</span>
+                        </div>
+                        <span class="price">Rs. 750</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Shrimp in a sweet and spicy chili sauce. A Chinese-Japanese favorite.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Shrimp & Egg in Chili Sauce
+                            <span class="jp-name">エビと玉子のチリソース</span>
+                        </div>
+                        <span class="price">Rs. 800</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Shrimp and scrambled egg in chili sauce. Extra protein and flavor.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork, Wood Ear & Egg
+                            <span class="jp-name">豚肉きくらげ玉子炒め</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Pork stir-fried with wood ear mushrooms and egg. Textural variety in every bite.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="stirfry">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Mapo Tofu
+                            <span class="jp-name">麻婆豆腐</span>
+                        </div>
+                        <span class="price">Rs. 700</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Spicy Sichuan tofu with minced meat. Spice level adjustable to your preference.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Adjustable Spice</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rice -->
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Fried Rice
+                            <span class="jp-name">焼めし</span>
+                        </div>
+                        <span class="price">Rs. 650</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Classic Japanese fried rice with your choice of chicken or pork. Wok-fried to perfection.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag">Chicken or Pork</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork Chop Fried Rice
+                            <span class="jp-name">排骨焼めし</span>
+                        </div>
+                        <span class="price">Rs. 850</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Fried rice topped with a crispy pork chop. A hearty and satisfying meal.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork Kimchi Fried Rice
+                            <span class="jp-name">豚キムチ焼めし</span>
+                        </div>
+                        <span class="price">Rs. 750</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Spicy kimchi fried rice with pork. Bold flavors with a Korean-Japanese twist.</p>
+                    <div class="menu-card-footer">
+                        <div class="tags">
+                            <span class="tag spicy">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Curry Rice
+                            <span class="jp-name">カレーライス</span>
+                        </div>
+                        <span class="price">Rs. 650</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Japanese curry over steamed rice. Mild, sweet, and deeply comforting.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Pork Rib Curry Rice
+                            <span class="jp-name">排骨カレーライス</span>
+                        </div>
+                        <span class="price">Rs. 850</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Japanese curry rice with a crispy pork rib. The ultimate comfort food upgrade.</p>
+                </div>
+            </div>
+
+            <div class="menu-card" data-category="rice">
+                <div class="menu-card-header">
+                    <h3>
+                        <div>
+                            Chicken Katsu Don
+                            <span class="jp-name">チキンカツ丼</span>
+                        </div>
+                        <span class="price">Rs. 800</span>
+                    </h3>
+                </div>
+                <div class="menu-card-body">
+                    <p>Chicken cutlet over rice with egg and onions simmered in a sweet dashi broth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-info fade-in">
+                <span class="jp-title">アクセス</span>
+                <h2>Visit Us</h2>
+
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Chaksibari Marg, Thamel<br>Kathmandu 44600, Nepal<br><span style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem; display:block;">Google Plus Code: P876+M4 Kathmandu</span></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h4>Reservations</h4>
+                            <p><a href="tel:976-8942367">976-8942367</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">◷</div>
+                        <div>
+                            <h4>Opening Hours</h4>
+                            <div class="hours-grid">
+                                <span class="day">Monday – Sunday</span>
+                                <span class="time">11:30 AM – 11:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">🍽</div>
+                        <div>
+                            <h4>Service Options</h4>
+                            <div class="service-pills">
+                                <span class="service-pill">Dine-in</span>
+                                <span class="service-pill">Kerbside Pickup</span>
+                                <span class="service-pill">No-contact Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-wrapper fade-in">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.857766361052!2d85.3102!3d27.7154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQyJzU1LjQiTiA4NcKwMTgnMzYuNyJF!5e0!3m2!1sen!2snp!4v1620000000000!5m2!1sen!2snp" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+                <div class="map-overlay">
+                    <div class="map-overlay-content">
+                        <span class="icon">📍</span>
+                        <span>Chaksibari Marg, Thamel, Kathmandu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Futatsume <span>Ramen</span></div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#contact">Contact</a>
+            <a href="tel:976-8942367">Order</a>
+        </div>
+        <p>Authentic Japanese Restaurant | Thamel, Kathmandu<br>
+        © 2026 Futatsume Ramen. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
+
+        // Menu category filtering
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const menuCards = document.querySelectorAll('.menu-card');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const category = btn.dataset.category;
+
+                menuCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        menuCards.forEach(card => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
